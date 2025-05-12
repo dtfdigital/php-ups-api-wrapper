@@ -14,7 +14,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "RahulGodiyal\\PhpUpsApiWrapper\\": "src/"
+            "Dtfdigital\\PhpUpsApiWrapper\\": "src/"
         }
     },
     "authors": [
