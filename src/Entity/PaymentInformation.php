@@ -4,33 +4,57 @@ namespace RahulGodiyal\PhpUpsApiWrapper\Entity;
 
 class PaymentInformation
 {
-    private ShipmentCharge $shipmentCharge;
-
-    public function exists()
-    {
-        return $this->shipmentCharge->exists();
-    }
+    /**
+     * @var ShipmentCharge[]
+     */
+    private array $shipmentCharges = [];
 
     public function __construct()
     {
-        $this->shipmentCharge = new ShipmentCharge();
+        // Optionally add a default ShipmentCharge, or leave empty
     }
 
-    public function setShipmentCharge(ShipmentCharge $shipmentCharge): self
+    public function exists(): bool
     {
-        $this->shipmentCharge = $shipmentCharge;
+        // Check if any of the ShipmentCharges exist
+        foreach ($this->shipmentCharges as $charge) {
+            if ($charge->exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function addShipmentCharge(ShipmentCharge $shipmentCharge): self
+    {
+        $this->shipmentCharges[] = $shipmentCharge;
         return $this;
     }
 
-    public function getShipmentCharge(): ShipmentCharge
+    /**
+     * Replace all shipment charges at once (optional)
+     */
+    public function setShipmentCharges(array $shipmentCharges): self
     {
-        return $this->shipmentCharge;
+        $this->shipmentCharges = $shipmentCharges;
+        return $this;
+    }
+
+    /**
+     * @return ShipmentCharge[]
+     */
+    public function getShipmentCharges(): array
+    {
+        return $this->shipmentCharges;
     }
 
     public function toArray(): array
     {
         return [
-            "ShipmentCharge" => $this->shipmentCharge->toArray()
+            "ShipmentCharge" => array_map(
+                fn(ShipmentCharge $charge) => $charge->toArray(),
+                $this->shipmentCharges
+            )
         ];
     }
 }
