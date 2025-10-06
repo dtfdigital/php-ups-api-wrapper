@@ -12,6 +12,9 @@ class Shipment
     private PaymentInformation $paymentInformation;
     private Service $service;
     private Package $package;
+    private ReferenceNumber $referenceNumber;
+    private ShippingRatingOptions $shippingRatingOptions;
+
     private array $additional = [];
     private array $packages = [];
 
@@ -19,6 +22,9 @@ class Shipment
     {
         $this->returnService = new ReturnService();
         $this->paymentInformation = new PaymentInformation();
+        $this->referenceNumber = new ReferenceNumber();
+        $this->shippingRatingOptions = new ShippingRatingOptions();
+    
     }
 
     public function setDescription(string $description): self
@@ -30,6 +36,17 @@ class Shipment
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+     public function setReferenceNumber(ReferenceNumber $referenceNumber): self
+    {
+        $this->referenceNumber = $referenceNumber;
+        return $this;
+    }
+
+    public function getReferenceNumber(): ReferenceNumber
+    {
+        return $this->referenceNumber;
     }
 
     public function setReturnService(ReturnService $returnService): self
@@ -115,11 +132,25 @@ class Shipment
         return $this->package;
     }
 
+    public function setShippingRatingOptions(ShippingRatingOptions $shippingRatingOptions): self
+    {
+        $this->shippingRatingOptions = $shippingRatingOptions;
+        return $this;
+    }
+
+    public function getShippingRatingOptions(): ShippingRatingOptions
+    {
+        return $this->shippingRatingOptions;
+    }
+
+
     public function setAdditional(array $additional): self
     {
         $this->additional = $additional;
         return $this;
     }
+
+    
 
     public function toArray(): array
     {
@@ -162,6 +193,14 @@ class Shipment
             $shipment["ReturnService"] = $this->returnService->toArray();
         }
 
+        if ($this->referenceNumber->exists()) {
+            $shipment["ReferenceNumber"] = $this->referenceNumber->toArray();
+        }
+        
+        if ($this->shippingRatingOptions->exists()) {
+            $shipment["ShipmentRatingOptions"] = $this->shippingRatingOptions->toArray();
+        }
+
         if($this->additional > 0) {
             $shipment = array_merge($shipment,$this->additional);
         }
@@ -170,3 +209,4 @@ class Shipment
         return $shipment;
     }
 }
+
