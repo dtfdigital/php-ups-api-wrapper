@@ -7,6 +7,7 @@ class Shipper
     private ?string $name;
     private string $attentionName = "";
     private string $taxIdentificationNumber = "";
+     private string $email = "";
     private Phone $phone;
     private ?string $shipperNumber;
     private string $faxNumber = "";
@@ -59,6 +60,17 @@ class Shipper
     public function getPhone(): Phone
     {
         return $this->phone;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 
     public function setShippingNumber(string $shipper_number): self
@@ -118,6 +130,11 @@ class Shipper
             $shipper["FaxNumber"] = $this->faxNumber;
         }
 
+        if ($this->email) {
+            $shipTo["EmailAddress"] = $this->email;
+        }
+
         return $shipper;
     }
 }
+
