@@ -146,7 +146,13 @@ class Shipment
 
     public function setAdditional(array $additional): self
     {
-        $this->additional = $additional;
+        
+        if($this->additional > 0) {
+            $this->additional = array_merge($this->additional,$additional);
+        } else {
+            $this->additional = $additional;
+        }
+
         return $this;
     }
 
@@ -209,4 +215,5 @@ class Shipment
         return $shipment;
     }
 }
+
 
